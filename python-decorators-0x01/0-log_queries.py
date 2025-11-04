@@ -1,21 +1,19 @@
 import sqlite3
 import functools
+from datetime import datetime  # Needed for timestamp logging
 
-# Decorator to log SQL queries
+# Decorator to log SQL queries with timestamp
 def log_queries(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        # Extract the query argument (assuming it's named 'query' or passed positionally)
         query = kwargs.get('query') if 'query' in kwargs else args[0] if args else None
         
-        # Log the SQL query before execution
-        print(f"[LOG] Executing SQL Query: {query}")
+        # Log the SQL query with current timestamp
+        print(f"[{datetime.now()}] Executing SQL Query: {query}")
         
-        # Call the actual function
         result = func(*args, **kwargs)
         
-        # Optionally log after execution
-        print("[LOG] Query executed successfully.\n")
+        print(f"[{datetime.now()}] Query executed successfully.\n")
         return result
     return wrapper
 
